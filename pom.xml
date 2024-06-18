@@ -1,0 +1,103 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>pmd-unnecessary-cast-false-positive</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pmd.version>7.2.0</pmd.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.4</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.22.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <!-- Can be removed when https://github.com/apache/maven-pmd-plugin/pull/144 is released -->
+                        <artifactId>pmd-compat6</artifactId>
+                        <version>${pmd.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-core</artifactId>
+                        <version>${pmd.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <artifactId>pmd-java</artifactId>
+                        <version>${pmd.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <!-- Can be removed when https://github.com/apache/maven-pmd-plugin/pull/144 is released -->
+                        <artifactId>pmd-jsp</artifactId>
+                        <version>${pmd.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.sourceforge.pmd</groupId>
+                        <!-- Can be removed when https://github.com/apache/maven-pmd-plugin/pull/144 is released -->
+                        <artifactId>pmd-javascript</artifactId>
+                        <version>${pmd.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>pmd</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <excludeFromFailureFile>${project.basedir}/exclude-pmd.properties
+                            </excludeFromFailureFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>cpd</id>
+                        <goals>
+                            <goal>cpd-check</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <excludeFromFailureFile>${project.basedir}/exclude-cpd.properties
+                            </excludeFromFailureFile>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <targetJdk>17</targetJdk>
+                    <linkXRef>false</linkXRef>
+                    <analysisCache>true</analysisCache>
+                    <printFailingErrors>true</printFailingErrors>
+                    <rulesets>
+                        <ruleset>pmd-rules.xml</ruleset>
+                    </rulesets>
+                    <excludeRoots>
+                        <excludeRoot>target/generated-sources</excludeRoot>
+                    </excludeRoots>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
